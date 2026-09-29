@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zephyris Admin</title>
+
+<style>
+:root{
+    --bg:#09090b;
+    --panel:#121216;
+    --panel2:#18181d;
+    --line:#292930;
+    --text:#f4f4f6;
+    --mute:#8b8b96;
+    --red:#ff3b3b;
+    --red2:#c9141d;
+    --green:#36d995;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    color:var(--text);
+    background:
+    radial-gradient(900px 400px at 50% -10%,rgba(255,59,59,.15),transparent 70%),
+    var(--bg);
+    -webkit-font-smoothing:antialiased;
+}
+
+button,input,select{
+    font:inherit;
+    color:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+svg{
+    width:18px;
+    height:18px;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-box{
+    width:100%;
+    max-width:390px;
+    padding:34px 28px;
+    background:rgba(18,18,22,.97);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+
+.mark{
+    width:54px;
+    height:54px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    margin:0 auto 18px;
+    background:linear-gradient(135deg,var(--red),var(--red2));
+    box-shadow:0 10px 30px rgba(255,59,59,.3);
+}
+
+.mark svg{
+    width:27px;
+    height:27px;
+    stroke:#fff;
+}
+
+.login h1{
+    text-align:center;
+    font-size:22px;
+}
+
+.sub{
+    text-align:center;
+    color:var(--mute);
+    font-size:13px;
+    margin:7px 0 25px;
+}
+
+.input{
+    margin-bottom:14px;
+}
+
+.input label,
+.field label{
+    display:block;
+    color:var(--mute);
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.input input,
+.field input,
+.field select{
+    width:100%;
+    height:44px;
+    padding:0 13px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:11px;
+    outline:none;
+    font-size:14px;
+}
+
+.input input:focus,
+.field input:focus,
+.field select:focus{
+    border-color:var(--red);
+    box-shadow:0 0 0 3px rgba(255,59,59,.1);
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:0;
+    border-radius:11px;
+    min-height:44px;
+    padding:0 17px;
+    font-size:13.5px;
+    font-weight:600;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,var(--red),var(--red2));
+    color:#fff;
+    box-shadow:0 8px 24px rgba(255,59,59,.2);
+}
+
+.login .btn-primary{
+    width:100%;
+}
+
+.login-error{
+    display:none;
+    color:#ff7070;
+    text-align:center;
+    font-size:12px;
+    margin-top:12px;
+}
+
+.app{
+    display:none;
+    min-height:100vh;
+}
+
+.topbar{
+    height:68px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+    border-bottom:1px solid var(--line);
+    background:rgba(9,9,11,.85);
+    backdrop-filter:blur(14px);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-size:17px;
+    font-weight:700;
+}
+
+.brand-mark{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--red),var(--red2));
+}
+
+.brand-mark svg{
+    stroke:#fff;
+}
+
+.logout{
+    height:36px;
+    padding:0 13px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--panel);
+    color:var(--mute);
+    font-size:12px;
+}
+
+.container{
+    width:min(1100px,calc(100% - 30px));
+    margin:26px auto 50px;
+}
+
+.header{
+    margin-bottom:20px;
+}
+
+.header h2{
+    font-size:22px;
+}
+
+.header p{
+    color:var(--mute);
+    font-size:12px;
+    margin-top:5px;
+}
+
+.create-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.create-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:15px;
+    font-weight:650;
+    margin-bottom:17px;
+}
+
+.create-icon{
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border-radius:9px;
+    background:rgba(255,59,59,.1);
+    color:var(--red);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+}
+
+.field{
+    min-width:0;
+}
+
+.create-btn{
+    width:100%;
+    margin-top:15px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:15px;
+    padding:15px 17px;
+}
+
+.stat-name{
+    color:var(--mute);
+    font-size:10px;
+    margin-bottom:6px;
+}
+
+.stat-value{
+    font-size:21px;
+    font-weight:700;
+}
+
+.list-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.list-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:17px 19px;
+    border-bottom:1px solid var(--line);
+}
+
+.list-head h3{
+    font-size:15px;
+}
+
+.list-count{
+    color:var(--mute);
+    font-size:12px;
+}
+
+.key-item{
+    padding:17px 19px;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:minmax(180px,1.4fr) minmax(90px,.6fr) minmax(120px,.8fr) auto;
+    gap:15px;
+    align-items:center;
+}
+
+.key-item:last-child{
+    border-bottom:0;
+}
+
+.key-code{
+    font-family:monospace;
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.key-device{
+    color:var(--mute);
+    font-size:11px;
+    margin-top:5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.info-title{
+    color:var(--mute);
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-size:12px;
+    font-weight:600;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 9px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.status:before{
+    content:"";
+    width:6px;
+    height:6px;
+    border-radius:50%;
+}
+
+.status.unused{
+    color:#aaaab3;
+    background:rgba(150,150,160,.08);
+}
+
+.status.unused:before{
+    background:#777782;
+}
+
+.status.active{
+    color:var(--green);
+    background:rgba(54,217,149,.09);
+}
+
+.status.active:before{
+    background:var(--green);
+}
+
+.actions{
+    display:flex;
+    gap:7px;
+}
+
+.action{
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--panel2);
+    color:var(--mute);
+    transition:.15s;
+}
+
+.action:hover{
+    color:#fff;
+    border-color:#44444d;
+}
+
+.action.delete:hover{
+    color:#ff6464;
+    border-color:rgba(255,59,59,.45);
+    background:rgba(255,59,59,.08);
+}
+
+.empty{
+    padding:45px 20px;
+    text-align:center;
+    color:var(--mute);
+}
+
+.empty-icon{
+    width:42px;
+    height:42px;
+    margin:0 auto 10px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:var(--panel2);
+}
+
+.empty p{
+    font-size:13px;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:100;
+    background:#1b1b20;
+    border:1px solid #303038;
+    border-radius:11px;
+    padding:12px 15px;
+    font-size:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
+    opacity:0;
+    transform:translateY(10px);
+    pointer-events:none;
+    transition:.2s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+@media(max-width:760px){
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .container{
+        width:calc(100% - 20px);
+        margin-top:18px;
+    }
+
+    .header h2{
+        font-size:19px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        gap:7px;
+    }
+
+    .stat{
+        padding:12px 10px;
+    }
+
+    .stat-value{
+        font-size:18px;
+    }
+
+    .stat-name{
+        font-size:9px;
+    }
+
+    .key-item{
+        grid-template-columns:1fr auto;
+        gap:12px;
+    }
+
+    .key-main{
+        grid-column:1/-1;
+    }
+
+    .actions{
+        grid-column:2;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section class="login" id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="mark">
+            <svg viewBox="0 0 24 24">
+                <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+            </svg>
+        </div>
+
+        <h1>Zephyris Admin</h1>
+        <p class="sub">Quản lý hệ thống Key</p>
+
+        <div class="input">
+            <label>Tài khoản</label>
+            <input
+                id="username"
+                type="text"
+                inputmode="text"
+                autocomplete="username"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                placeholder="Nhập tài khoản">
+        </div>
+
+        <div class="input">
+            <label>Mật khẩu</label>
+            <input
+                id="password"
+                type="password"
+                inputmode="text"
+                autocomplete="current-password"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                placeholder="Nhập mật khẩu">
+        </div>
+
+        <button class="btn btn-primary" id="loginBtn">
+            Đăng nhập
+        </button>
+
+        <div class="login-error" id="loginError">
+            Tài khoản hoặc mật khẩu không chính xác
+        </div>
+
+    </div>
+
+</section>
+
+<div class="app" id="app">
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"></path>
+                    <path d="M9 12l2 2 4-4"></path>
+                </svg>
+            </div>
+
+            Zephyris Admin
+
+        </div>
+
+        <button class="logout" id="logoutBtn">
+            Đăng xuất
+        </button>
+
+    </header>
+
+    <main class="container">
+
+        <div class="header">
+            <h2>Quản lý Key</h2>
+            <p>Tạo và quản lý các Key kích hoạt</p>
+        </div>
+
+        <section class="create-card">
+
+            <div class="create-title">
+
+                <div class="create-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12h14"></path>
+                    </svg>
+                </div>
+
+                Tạo Key mới
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>Thời gian</label>
+
+                    <select id="duration">
+                        <option value="1">1 ngày</option>
+                        <option value="3">3 ngày</option>
+                        <option value="7" selected>7 ngày</option>
+                        <option value="30">30 ngày</option>
+                        <option value="365">1 năm</option>
+                        <option value="0">Vĩnh viễn</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Mã thiết bị</label>
+
+                    <input
+                        id="device"
+                        type="text"
+                        inputmode="text"
+                        autocomplete="off"
+                        autocapitalize="none"
+                        autocorrect="off"
+                        spellcheck="false"
+                        placeholder="Nhập mã thiết bị">
+                </div>
+
+                <div class="field">
+                    <label>Số lượng</label>
+
+                    <select id="quantity">
+                        <option value="1" selected>1 Key</option>
+                        <option value="2">2 Key</option>
+                        <option value="5">5 Key</option>
+                        <option value="10">10 Key</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary create-btn" id="createBtn">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+                </svg>
+
+                Tạo Key
+
+            </button>
+
+        </section>
+
+        <section class="stats">
+
+            <div class="stat">
+                <div class="stat-name">TỔNG KEY</div>
+                <div class="stat-value" id="totalKeys">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-name">ĐÃ KÍCH HOẠT</div>
+                <div class="stat-value" id="activeKeys">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-name">CHƯA KÍCH HOẠT</div>
+                <div class="stat-value" id="unusedKeys">0</div>
+            </div>
+
+        </section>
+
+        <section class="list-card">
+
+            <div class="list-head">
+
+                <h3>Danh sách Key</h3>
+
+                <span class="list-count" id="listCount">
+                    0 Key
+                </span>
+
+            </div>
+
+            <div id="keyList"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_USER = "Zephyris";
+const ADMIN_PASS = "732012";
+
+const loginScreen = document.getElementById("loginScreen");
+const app = document.getElementById("app");
+
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const loginError = document.getElementById("loginError");
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const createBtn = document.getElementById("createBtn");
+const deviceInput = document.getElementById("device");
+const durationInput = document.getElementById("duration");
+const quantityInput = document.getElementById("quantity");
+
+const keyList = document.getElementById("keyList");
+
+const totalKeys = document.getElementById("totalKeys");
+const activeKeys = document.getElementById("activeKeys");
+const unusedKeys = document.getElementById("unusedKeys");
+const listCount = document.getElementById("listCount");
+
+const toast = document.getElementById("toast");
+
+let keys = [];
+
+try{
+    keys = JSON.parse(
+        localStorage.getItem("zephyris_keys") || "[]"
+    );
+
+    if(!Array.isArray(keys)){
+        keys = [];
+    }
+}catch(e){
+    keys = [];
+}
+
+function saveKeys(){
+    localStorage.setItem(
+        "zephyris_keys",
+        JSON.stringify(keys)
+    );
+}
+
+let toastTimeout;
+
+function showToast(message){
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimeout);
+
+    toastTimeout = setTimeout(function(){
+        toast.classList.remove("show");
+    },1800);
+}
+
+function login(){
+
+    const user = username.value.trim();
+    const pass = password.value;
+
+    if(user === ADMIN_USER && pass === ADMIN_PASS){
+
+        localStorage.setItem(
+            "zephyris_login",
+            "true"
+        );
+
+        loginScreen.style.display = "none";
+        app.style.display = "block";
+
+        loginError.style.display = "none";
+
+        renderKeys();
+
+    }else{
+
+        loginError.style.display = "block";
+
+    }
+}
+
+loginBtn.addEventListener("click", login);
+
+password.addEventListener("keydown",function(e){
+
+    if(e.key === "Enter"){
+        login();
+    }
+
+});
+
+logoutBtn.addEventListener("click",function(){
+
+    localStorage.removeItem("zephyris_login");
+
+    app.style.display = "none";
+    loginScreen.style.display = "flex";
+
+    username.value = "";
+    password.value = "";
+
+});
+
+function generateKey(){
+
+    const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    function part(length){
+
+        let result = "";
+
+        for(let i = 0; i < length; i++){
+
+            result += chars[
+                Math.floor(
+                    Math.random() * chars.length
+                )
+            ];
+
+        }
+
+        return result;
+    }
+
+    return "ZEPH-" +
+        part(5) + "-" +
+        part(5) + "-" +
+        part(5);
+}
+
+function createKeys(){
+
+    const duration =
+        Number(durationInput.value);
+
+    const device =
+        deviceInput.value.trim() || "Chưa gán";
+
+    const quantity =
+        Number(quantityInput.value);
+
+    for(let i = 0; i < quantity; i++){
+
+        keys.unshift({
+
+            id:
+                Date.now() +
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .substring(2,9),
+
+            key:generateKey(),
+
+            duration:duration,
+
+            device:device,
+
+            activated:false,
+
+            created:new Date().toISOString()
+
+        });
+
+    }
+
+    saveKeys();
+    renderKeys();
+
+    deviceInput.value = "";
+
+    showToast(
+        quantity > 1
+        ? "Đã tạo " + quantity + " Key"
+        : "Đã tạo Key thành công"
+    );
+}
+
+createBtn.addEventListener(
+    "click",
+    createKeys
+);
+
+function formatDuration(days){
+
+    if(days === 0){
+        return "Vĩnh viễn";
+    }
+
+    if(days === 1){
+        return "1 ngày";
+    }
+
+    if(days === 365){
+        return "1 năm";
+    }
+
+    return days + " ngày";
+}
+
+function copyText(text){
+
+    if(
+        navigator.clipboard &&
+        window.isSecureContext
+    ){
+
+        navigator.clipboard.writeText(text)
+        .then(function(){
+
+            showToast("Đã copy Key");
+
+        })
+        .catch(function(){
+
+            fallbackCopy(text);
+
+        });
+
+        return;
+    }
+
+    fallbackCopy(text);
+}
+
+function fallbackCopy(text){
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    let success = false;
+
+    try{
+        success =
+            document.execCommand("copy");
+    }catch(e){
+        success = false;
+    }
+
+    document.body.removeChild(textarea);
+
+    if(success){
+        showToast("Đã copy Key");
+    }else{
+        showToast("Không thể copy tự động");
+    }
+}
+
+function deleteKey(id){
+
+    const exists =
+        keys.some(function(item){
+            return String(item.id) === String(id);
+        });
+
+    if(!exists){
+        return;
+    }
+
+    if(!window.confirm("Bạn có chắc muốn xóa Key này?")){
+        return;
+    }
+
+    keys =
+        keys.filter(function(item){
+            return String(item.id) !== String(id);
+        });
+
+    saveKeys();
+    renderKeys();
+
+    showToast("Đã xóa Key");
+}
+
+function createElement(tag,className,text){
+
+    const element =
+        document.createElement(tag);
+
+    if(className){
+        element.className = className;
+    }
+
+    if(text !== undefined){
+        element.textContent = text;
+    }
+
+    return element;
+}
+
+function renderKeys(){
+
+    keyList.innerHTML = "";
+
+    const active =
+        keys.filter(function(item){
+            return item.activated === true;
+        }).length;
+
+    const unused =
+        keys.length - active;
+
+    totalKeys.textContent = keys.length;
+    activeKeys.textContent = active;
+    unusedKeys.textContent = unused;
+    listCount.textContent = keys.length + " Key";
+
+    if(keys.length === 0){
+
+        const empty =
+            createElement("div","empty");
+
+        const icon =
+            createElement("div","empty-icon");
+
+        icon.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+        `;
+
+        const text =
+            createElement(
+                "p",
+                "",
+                "Chưa có Key nào"
+            );
+
+        empty.appendChild(icon);
+        empty.appendChild(text);
+
+        keyList.appendChild(empty);
+
+        return;
+    }
+
+    keys.forEach(function(item){
+
+        const row =
+            createElement("div","key-item");
+
+        const main =
+            createElement("div","key-main");
+
+        const code =
+            createElement(
+                "div",
+                "key-code",
+                item.key
+            );
+
+        const dev =
+            createElement(
+                "div",
+                "key-device",
+                "Thiết bị: " +
+                (item.device || "Chưa gán")
+            );
+
+        main.appendChild(code);
+        main.appendChild(dev);
+
+        const time =
+            createElement("div","key-info");
+
+        const timeTitle =
+            createElement(
+                "div",
+                "info-title",
+                "THỜI HẠN"
+            );
+
+        const timeValue =
+            createElement(
+                "div",
+                "info-value",
+                formatDuration(
+                    Number(item.duration)
+                )
+            );
+
+        time.appendChild(timeTitle);
+        time.appendChild(timeValue);
+
+        const statusBox =
+            createElement("div","key-info");
+
+        const statusTitle =
+            createElement(
+                "div",
+                "info-title",
+                "TRẠNG THÁI"
+            );
+
+        const status =
+            createElement(
+                "span",
+                item.activated
+                ? "status active"
+                : "status unused",
+                item.activated
+                ? "Đã kích hoạt"
+                : "Chưa kích hoạt"
+            );
+
+        statusBox.appendChild(statusTitle);
+        statusBox.appendChild(status);
+
+        const actions =
+            createElement("div","actions");
+
+        const copyBtn =
+            createElement("button","action");
+
+        copyBtn.type = "button";
+        copyBtn.title = "Copy Key";
+
+        copyBtn.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <rect
+                    x="9"
+                    y="9"
+                    width="11"
+                    height="11"
+                    rx="2">
+                </rect>
+                <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4
+                   a2 2 0 0 1 2-2h9
+                   a2 2 0 0 1 2 2v1">
+                </path>
+            </svg>
+        `;
+
+        copyBtn.addEventListener(
+            "click",
+            function(){
+                copyText(item.key);
+            }
+        );
+
+        const deleteBtn =
+            createElement(
+                "button",
+                "action delete"
+            );
+
+        deleteBtn.type = "button";
+        deleteBtn.title = "Xóa Key";
+
+        deleteBtn.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path d="M3 6h18"></path>
+                <path d="M8 6V4h8v2"></path>
+                <path d="M19 6l-1 15H6L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+            </svg>
+        `;
+
+        deleteBtn.addEventListener(
+            "click",
+            function(){
+                deleteKey(item.id);
+            }
+        );
+
+        actions.appendChild(copyBtn);
+        actions.appendChild(deleteBtn);
+
+        row.appendChild(main);
+        row.appendChild(time);
+        row.appendChild(statusBox);
+        row.appendChild(actions);
+
+        keyList.appendChild(row);
+
+    });
+}
+
+if(
+    localStorage.getItem("zephyris_login") === "true"
+){
+
+    loginScreen.style.display = "none";
+    app.style.display = "block";
+
+}
+
+renderKeys();
+</script>
+
+</body>
+</html>
